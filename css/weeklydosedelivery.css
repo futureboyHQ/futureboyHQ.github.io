@@ -1,7 +1,7 @@
 html, body {
   color: #000;
   background-color: #fff;
-  font-family: "futura-pt",sans-serif;
+  font-family: "futura-pt", sans-serif;
   max-width: 100%;
   overflow-x: hidden;
 }
@@ -23,6 +23,10 @@ a:hover, a:active, a:focus {
 
 ::-webkit-input-placeholder {
  color: #000;
+}
+
+span {
+	font-family: "futura-pt", sans-serif;
 }
 
 /*-----ANIMATION-------*/
@@ -511,12 +515,19 @@ a:hover, a:active, a:focus {
 /*----BOTTOM------*/
 
 .bottom {
+	height: 100vh;
   margin-top: 75px;
   text-align: center;
   font-size: 1.3rem;
   letter-spacing: 0.08rem;
 	/*font-weight: 600;*/
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
+
+.bottomPlacement {}
+
 
 .copyFollow700 {
 	display: none;
@@ -603,8 +614,8 @@ a:hover, a:active, a:focus {
 }
 
 .instagramBtm {
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  /*height: 100px;*/
   margin-left: 20px;
   margin-right: 20px;
 }
@@ -1439,6 +1450,12 @@ a:hover, a:active, a:focus {
 
 	.readMORE span {
 		/*border-bottom: solid 2px #8D45F2;*/
+	}
+
+	.copyBottom {
+		font-size: 1.2rem;
+		line-height: 2rem;
+
 	}
 
 }

@@ -216,6 +216,7 @@ a:hover, a:active, a:focus {
 }
 
 .vimeoVideo iframe {
+	width: 90%;
 	height: 360px;
 }
 

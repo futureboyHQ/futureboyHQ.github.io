@@ -662,6 +662,7 @@ a:hover, a:active, a:focus {
 		font-size: 0.7rem;
 		text-align: center;
 		display: block;
+		text-decoration: underline;
 		/*position: fixed;*/
 		/*top: 40%;
 		left: 50px;*/

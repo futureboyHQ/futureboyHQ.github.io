@@ -658,6 +658,16 @@ a:hover, a:active, a:focus {
 
 @media (min-width: 1024px) {
 
+	.logo1024 {
+		font-size: 0.7rem;
+		text-align: center;
+		display: block;
+		/*position: fixed;*/
+		/*top: 40%;
+		left: 50px;*/
+		z-index: 2;
+		margin: 50px 0;
+	}
 
 	.contentContainer {
 		padding-top: 180px;

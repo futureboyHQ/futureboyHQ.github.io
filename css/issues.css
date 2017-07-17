@@ -18,6 +18,14 @@ a {
   color: #000;
 }
 
+.linkInText {
+  text-decoration: underline;
+}
+
+.subscribeLink {
+	color: #8d42ff;
+}
+
 a:hover, a:active, a:focus {
   outline: 0;
 }
@@ -226,6 +234,11 @@ a:hover, a:active, a:focus {
 
 .soundcloudInText iframe {
 	height: 166px;
+}
+
+.trackName {
+	font-size: 1.5rem;
+	font-weight: 700;
 }
 
 

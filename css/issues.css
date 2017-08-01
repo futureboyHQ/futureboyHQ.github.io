@@ -12,9 +12,9 @@ input {
   color: #e5d9ff;
 }
 
-h3 {
+/*h3 {
     margin: 80px 0;
-}
+}*/
 
 a {
   outline: 0;
@@ -238,6 +238,12 @@ a:hover, a:active, a:focus {
 
 .soundcloudInText iframe {
 	height: 166px;
+}
+
+.soundcloudInTextPlacement{
+	display: flex;
+	justify-content: center;
+	
 }
 
 .trackName {

@@ -243,7 +243,19 @@ a:hover, a:active, a:focus {
 .soundcloudInTextPlacement{
 	display: flex;
 	justify-content: center;
-	
+}
+
+.spotifyInText {
+	margin: 50px 0;
+}
+
+.spotifyInText iframe {
+	height: 90px;
+}
+
+.spotifyInTextPlacement{
+	display: flex;
+	justify-content: center;
 }
 
 .trackName {

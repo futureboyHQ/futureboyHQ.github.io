@@ -92,7 +92,7 @@ a:hover, a:active, a:focus {
 }
 
 .articleImgPlacementWIDER750PX img {
-	width: 80%;
+	width: 100%;
 }
 
 .articleData {
@@ -554,7 +554,6 @@ a:hover, a:active, a:focus {
 
 	.articleImgPlacementWIDER750PX {
 		width: 80%;
-		max-width: 1050px;
 	}
 
 	.imgSubtitle {
@@ -737,6 +736,10 @@ a:hover, a:active, a:focus {
 
 
 @media (min-width: 1375px) {
+
+	.articleImgPlacementWIDER750PX {
+		max-width: 1050px;
+	}
 
 	.text {
 		font-size: 1.7rem;

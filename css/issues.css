@@ -87,6 +87,14 @@ a:hover, a:active, a:focus {
 }
 
 
+#three {
+	height: 800px;
+	width: 800px;
+	border: 2px solid red;
+}
+
+canvas { width: 100%; height: 100% }
+
 .articleIMG {
 	/*margin-top: 50px;*/
 }
@@ -208,6 +216,14 @@ a:hover, a:active, a:focus {
 	font-size: 0.8rem;
 	letter-spacing: 0.08rem;
 	margin-top: 10px;
+}
+
+.imgSubtitleThree {
+  display: flex;
+	justify-content: center;
+	font-size: 0.8rem;
+	letter-spacing: 0.08rem;
+	margin-top: 30px;
 }
 
 .quoteInText {
@@ -334,6 +350,18 @@ a:hover, a:active, a:focus {
 }
 
 /*----BOTTOM------*/
+
+.logo1024 {
+  font-size: 0.5rem;
+  text-align: center;
+  display: block;
+  text-decoration: underline;
+  /*position: fixed;*/
+  /*top: 40%;
+  left: 50px;*/
+  z-index: 2;
+  margin: 50px 0;
+}
 
 .bottom {
   margin-top: 75px;
@@ -561,6 +589,12 @@ a:hover, a:active, a:focus {
 	}
 
 	.imgSubtitle {
+		font-weight: 500;
+		font-size: 1rem;
+		letter-spacing: 0.1rem;
+	}
+
+	.imgSubtitleThree {
 		font-weight: 500;
 		font-size: 1rem;
 		letter-spacing: 0.1rem;

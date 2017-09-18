@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--
+    __________      _____                   ______
+    ___  ____/___  ___  /____  ________________  /____________  __
+    __  /_   _  / / /  __/  / / /_  ___/  _ \_  __ \  __ \_  / / /
+    _  __/   / /_/ // /_ / /_/ /_  /   /  __/  /_/ / /_/ /  /_/ /
+    /_/      \__,_/ \__/ \__,_/ /_/    \___//_.___/\____/_\__, /
+                                                         /____/
+    -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width initial-scale = 1.0 maximum-scale=1.0 user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>No. 013</title>
+
+    <!-- meta for preview -->
+    <meta property="og:url"                content="http://weeklydosedelivery.com/No./013.html" />
+    <meta property="og:type"               content="Weekly Dose" />
+    <meta property="og:title"              content="Weekly Dose Delivery No. 013 - On Truth" />
+    <meta property="og:description"        content="Gregory leaks a puzzle to find & live truth."/>
+    <meta property="og:image"              content="http://weeklydosedelivery.com/img/013thb.png" />
+
+    <!-- Hotjar Tracking Code for www.maat.space -->
+    <script>
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:481929,hjsv:5};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/issues.css">
+    <link rel="stylesheet" href="../css/fonts.css">
+</head>
+
+<body>
+
+
+    <script type="x-shader/x-fragment" id="fshader">
+      varying vec3 vWorldPosition;
+      varying vec3 vWorldPosition2;
+
+      uniform float gridSize;
+      uniform float offset;
+
+      vec3 hsv2rgb(vec3 c) {
+          vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+          vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+          return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+      }
+
+      vec3 rgb2hsv(vec3 c) {
+
+          vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+          vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+          vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+          float d = q.x - min(q.w, q.y);
+          float e = 1.0e-10;
+          return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+
+      }
+
+      void main() {
+
+          float d = length(vWorldPosition2.xz);
+
+          float x1 = mod(vWorldPosition.x, gridSize);
+          float x2 = mod(-vWorldPosition.x, gridSize);
+
+          float z1 = mod(vWorldPosition.z, gridSize);
+          float z2 = mod(-vWorldPosition.z, gridSize);
+
+          float al = 1.0-sqrt(min(min(x1, x2), min(z1, z2)));
+
+          float b = min(1.0, al) / 2.0;
+
+          vec3 c;
+          float x = vWorldPosition2.x;
+          float l = mod(x - offset*2.0, gridSize * 4.0);
+
+			    if (l < gridSize) {
+			        c = mix(vec3(0.07),
+			                hsv2rgb( vec3( l / gridSize + vWorldPosition.z/10000.0, 0.6, 1.0 ))
+			                , pow(1.0 - l / gridSize, 2.0) );
+			    } else {
+			        c = vec3(0.05);
+			    }
+
+          float fog = 1.0/ pow(0.0005*d, 5.0);
+          gl_FragColor = vec4(c, b * fog);
+
+      }
+
+    </script>
+    <script type="x-shader/x-vertex" id="vshader">
+        varying vec3 vWorldPosition;
+        varying vec3 vWorldPosition2;
+        uniform float offset;
+        uniform float gridSize;
+
+
+        void main() {
+
+            vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+            vWorldPosition = worldPosition.xyz;
+
+            vWorldPosition2 = (modelMatrix *
+            vec4( position.x + mod(offset, gridSize)
+                , position.y
+                , position.z, 1.0)).xyz;
+
+
+            gl_Position = projectionMatrix * modelViewMatrix *
+            vec4( position.x + mod(offset, gridSize)
+                , position.y
+                , position.z
+                , 1.0
+                );
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.min.js"></script>
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+		<script>
+
+			//var gui = new dat.GUI();
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 50 );
+			camera.position.z = 30;
+
+			var renderer = new THREE.WebGLRenderer( { antialias: true } );
+			renderer.setPixelRatio( window.devicePixelRatio );
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.setClearColor( 0x000000, 1 );
+			document.body.appendChild( renderer.domElement );
+
+			var orbit = new THREE.OrbitControls( camera, renderer.domElement );
+			orbit.enableZoom = false;
+
+			var lights = [];
+
+			lights[ 0 ] = new THREE.PointLight( 0x830ED8, 6, 0 );
+			lights[ 1 ] = new THREE.PointLight( 0x830ED8, 6, 0 );
+			lights[ 2 ] = new THREE.PointLight( 0x830ED8, 6, 0 );
+      lights[ 3 ] = new THREE.PointLight( 0x830ED8, 6, 0 );
+      lights[ 4 ] = new THREE.PointLight( 0x830ED8, 6, 0 );
+      lights[ 5 ] = new THREE.PointLight( 0x830ED8, 6, 0 );
+      lights[ 6 ] = new THREE.PointLight( 0x830ED8, 6, 0 );
+
+			lights[ 0 ].position.set( 0, 200, 0 );
+			lights[ 1 ].position.set( 100, 200, 100 );
+			lights[ 2 ].position.set( - 100, - 200, - 100 );
+      lights[ 3 ].position.set( 100, -200, 100 );
+			lights[ 4 ].position.set( -100, 200, 100 );
+      lights[ 5 ].position.set( 100, 200, -100 );
+      lights[ 6 ].position.set( 0, 0, -100 );
+
+			scene.add( lights[ 0 ] );
+			scene.add( lights[ 1 ] );
+			scene.add( lights[ 2 ] );
+      scene.add( lights[ 3 ] );
+			scene.add( lights[ 4 ] );
+      scene.add( lights[ 5 ] );
+			scene.add( lights[ 6 ] );
+
+			var mesh = new THREE.Object3D();
+
+			mesh.add( new THREE.LineSegments(
+
+				new THREE.Geometry(),
+
+				new THREE.LineBasicMaterial( {
+					color: 0xffffff,
+					transparent: true,
+					opacity: 0
+				} )
+
+        // new THREE.ShaderMaterial( {
+        //   vertexShader: document.getElementById( 'vshader' ).textContent,
+        //   fragmentShader: document.getElementById( 'fshader' ).textContent,
+        //   uniforms: {
+        //     offset: {
+        //         type: "f",
+        //         value: 0
+        //     },
+        //     gridSize: {
+        //         type: "f",
+        //         value: 10
+        //     }
+        //   },
+        //   depthWrite: false,
+        //   depthTest: false,
+        //   transparent: true,
+        //   wireframe: true,
+        //   wireframeLinewidth: 1,
+        //   blending: THREE.AdditiveBlending
+				// 	// color: 0,
+				// 	// emissive: 0,
+        //   // opacity: 0,
+				// 	// side: THREE.DoubleSide,
+				// 	// flatShading: true
+				// } )
+
+			));
+
+			mesh.add( new THREE.Mesh(
+
+				new THREE.Geometry(),
+
+				new THREE.MeshPhongMaterial( {
+					color: 0x000000,
+					emissive: 0,
+          opacity: 1,
+					side: THREE.DoubleSide,
+					flatShading: true
+				} )
+
+			) );
+
+      function updateGroupGeometry( mesh, geometry ) {
+
+      	mesh.children[ 0 ].geometry.dispose();
+      	mesh.children[ 1 ].geometry.dispose();
+
+      	mesh.children[ 0 ].geometry = new THREE.WireframeGeometry( geometry );
+      	mesh.children[ 1 ].geometry = geometry;
+
+      }
+
+      //updateGroupGeometry(mesh, new THREE.PlaneGeometry(2*(1/100)*6E4*30*0.016, 2*(1/100)*6E4*30*0.016,50,50));
+      updateGroupGeometry(mesh, new THREE.DodecahedronBufferGeometry(10, 0));
+
+			scene.add( mesh );
+
+
+      Math.randomRange = function (){var args=[].slice.call(arguments);args.unshift(-arguments[0]);return Math.random.apply(Math,args)}
+      var particleCount = 2E5
+        , pGeometry = new THREE.Geometry()
+        , pMaterial = new THREE.ParticleBasicMaterial({
+          color: 0xffffff,
+          size: 0.04
+      });
+      for (var p = 0; p < particleCount; p++) {
+          var pX = Math.random() * 500 - 250
+            , pY = Math.random() * 500 - 250
+            , pZ = Math.random() * 500 - 250;
+          particle = new THREE.Vector3(pX,pY,pZ);
+          pGeometry.vertices.push(particle)
+      }
+      stars = new THREE.ParticleSystem(pGeometry,pMaterial);
+      scene.add(stars);
+
+			var render = function () {
+				requestAnimationFrame( render );
+        stars.rotation.x -= 0.002;
+        stars.rotation.y -= 0.002;
+        mesh.rotation.x += 0.005;
+        mesh.rotation.y += 0.005;
+				renderer.render( scene, camera );
+			};
+
+			window.addEventListener( 'resize', function () {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}, false );
+
+			render();
+
+		</script>
+        <span class="imgSubtitleThree">Sacred Dodecahedron by Philippe</span>
+
+    </div>
+
+      <div class="articleData">
+        <div class="articleDataPlacement">
+          <div class="postCategories">
+            <span class="rainbow">Weekly Dose No. 013 // September 18th</span>
+          </div>
+          <div class="postTitle"><h1>On Truth</h1></a>
+          </div>
+          <div class="text">
+            <p>Hi everyone! <span class='Gregory'>Gregory</span> here. We're breaking the rules for this one as we prepare for 10 weeks of Weekly Dose hibernation.</p>
+            <p>Dos[é] might send you a couple updates regarding some up & coming projects but this is it for the first phase of the Weekly Dose.</p>
+            <p>Thank you so much for everything so far, & enjoy this last edition until November 27th!</p>
+
+            <br>
+            <p class="border"></p>
+            <br>
+
+            <h3>The dictionary definition: Truth</h3>
+            <p>The quality or state of being true. That which is true or in accordance with fact or reality. Accurate or exact.</p>
+            <h3>The objective:</h3>
+            <p>Generate Smiles of Life, take action towards them, never settle & be. This, my friends, is the 4 step recipe that has brought the human.space team together & closer to Truth.</p>
+            <p>From the sacred place within our hearts, we send you much love & courage to take the leap of faith required to start living truthfully.</p>
+
+            <br>
+
+            <h3>To Name It Is To Lose It.</h3>
+
+            <p><span class="Gregory">Gregory</span> – I tried my best to make it short & sweet. After all, the great Truth has great silence. Hence, it's all about teasing the future of the Weekly Dose & leaving you with a great existential puzzle to solve.</p>
+
+
+            <div class="youtubeVideo">
+                <iframe src="https://www.youtube.com/embed/aw6DHjtL270" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <br>
+
+            <h3>Meditation soundbaths for the next 10 weeks</h3>
+            <p>I've been dreaming about a slow drum & Om meditation for couple weeks now & BOOM! The wonderful youtube channel Meditative Mind released a fanstastic one 2 days ago :D</p>
+            <p>Close the lights, light some candles, & dive deep into your inner space.</p>
+
+            <div class="youtubeVideo">
+                <iframe src="https://www.youtube.com/embed/UiBUokGXbiY" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <p>Lastly, I've had the great chance to cross path with Marc Handler & his son yesterday night. Marc's energy & story are fantastic & are definitely anchored in pursuing Truth. The universe shines through his eyes & he'll allow you to enter the mysterious domain of divine stillness through his mastery of Tibetan bowls.</p>
+            <p>Surrender. Live Truthfully & ... Just Be :)</p>
+
+            <div class="youtubeVideo">
+                <iframe src="https://www.youtube.com/embed/VjJrvQCsc7o" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <br>
+            <p class="border"></p>
+            <br>
+
+            <p>All right! Before closing this first phase of the human.space journey, I wanted to thank you all for your support & love. Thank you so much, & may these last words from Sivananda bring direction to your heart:</p>
+
+            <br>
+
+            <p><h4>Truth is complete in itself.</h4></p><p><h4>Truth has a strong foundation in itself. It is bold, it has no fears. It has no limit of space or time. It is a fearless, free bird in the sky. It does not care for status.</h4></p><p><h4>Truth is wealth in itself.</h4></p>
+
+            <br>
+
+            <p>Have a wonderful evening,</p>
+
+            <p>See you soon!</p>
+
+            <p>From the <span class="rainbow">human.space</span> team, <br><span class="rainbow">with love.</span></p>
+
+            <br>
+
+            <div class="logo1024">
+              <a href="../index.html"><h1>Check out our past editions</h1></a>
+            </div>
+
+            <br>
+
+          </div>
+        </div>
+      </div>
+
+
+</body>
+
+</html>

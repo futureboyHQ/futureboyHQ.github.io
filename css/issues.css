@@ -91,13 +91,10 @@ a:hover, a:active, a:focus {
 	display: flex;
 	justify-content: center;
 	align-items:center;
-	height: 500px;
-	width: 500px;
 }
 
 #threejs {
-	height: 500px;
-	width: 100%;
+
 }
 
 canvas {
